@@ -1,0 +1,9 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  planning_center_person: one
+  email: MyString
+
+two:
+  planning_center_person: two
+  email: MyString

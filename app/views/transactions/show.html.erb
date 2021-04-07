@@ -1,0 +1,109 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Bluepay:</strong>
+  <%= @transaction.bluepay_id %>
+</p>
+
+<p>
+  <strong>Payment type:</strong>
+  <%= @transaction.payment_type %>
+</p>
+
+<p>
+  <strong>Amount:</strong>
+  <%= @transaction.amount %>
+</p>
+
+<p>
+  <strong>Status:</strong>
+  <%= @transaction.status %>
+</p>
+
+<p>
+  <strong>Message:</strong>
+  <%= @transaction.message %>
+</p>
+
+<p>
+  <strong>Rebilling:</strong>
+  <%= @transaction.rebilling_id %>
+</p>
+
+<p>
+  <strong>Settlment:</strong>
+  <%= @transaction.settlment_id %>
+</p>
+
+<p>
+  <strong>Bank name:</strong>
+  <%= @transaction.bank_name %>
+</p>
+
+<p>
+  <strong>Address 1:</strong>
+  <%= @transaction.address_1 %>
+</p>
+
+<p>
+  <strong>Address 2:</strong>
+  <%= @transaction.address_2 %>
+</p>
+
+<p>
+  <strong>City:</strong>
+  <%= @transaction.city %>
+</p>
+
+<p>
+  <strong>State:</strong>
+  <%= @transaction.state %>
+</p>
+
+<p>
+  <strong>Zip code:</strong>
+  <%= @transaction.zip_code %>
+</p>
+
+<p>
+  <strong>Phone:</strong>
+  <%= @transaction.phone %>
+</p>
+
+<p>
+  <strong>Email:</strong>
+  <%= @transaction.email %>
+</p>
+
+<p>
+  <strong>Auth code:</strong>
+  <%= @transaction.auth_code %>
+</p>
+
+<p>
+  <strong>First name:</strong>
+  <%= @transaction.first_name %>
+</p>
+
+<p>
+  <strong>Last name:</strong>
+  <%= @transaction.last_name %>
+</p>
+
+<p>
+  <strong>Memo:</strong>
+  <%= @transaction.memo %>
+</p>
+
+<p>
+  <strong>Backend:</strong>
+  <%= @transaction.backend_id %>
+</p>
+
+<p>
+  <strong>Account:</strong>
+  <%= @transaction.account_id %>
+</p>
+
+<%= link_to 'Edit', edit_transaction_path(@transaction) %> |
+<%= link_to 'Back', transactions_path %>

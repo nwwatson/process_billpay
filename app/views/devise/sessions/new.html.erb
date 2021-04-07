@@ -1,0 +1,21 @@
+<div class="container col-xl-10 col-xxl-8 px-4 py-5">
+  <div class="row align-items-center g-5 py-5">
+    <div class="col-lg-6 text-center text-lg-start">
+      <h1 class="display-4 fw-bold lh-1 mb-3">Welcome</h1>
+      <p class="col-lg-10 fs-4">
+        Notice: Only authorized users are allowed to access this system.
+      </p>
+    </div>
+    <div class="col-10 mx-auto col-lg-6">
+      <%= form_for(resource, as: resource_name, url: session_path(resource_name), builder: BootstrapBuilder, html: { class: 'p-5 border rounded-3 bg-light' }) do |f| %>
+        <%= render "devise/shared/error_messages", resource: resource %>
+        <%= f.email_field :email, autofocus: true, autocomplete: 'email', placeholder: 'name@example.com', wrapping_class: 'form-floating' %>
+        <%= f.password_field :password, autocomplete: 'current-password', placeholder: 'Password', wrapping_class: 'form-floating' %>
+        <%= f.check_box :remember_me %>
+        <%= f.submit 'Sign In', class: 'w-100 btn btn-lg btn-primary' %>
+        <hr class="my-4">
+        <small class="text-muted"><%= render 'devise/shared/links' %></small>
+      <% end %>
+    </div>
+  </div>
+</div>

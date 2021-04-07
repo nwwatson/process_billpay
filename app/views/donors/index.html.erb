@@ -1,0 +1,44 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Donors</h1>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">Donor</th>
+      <th scope="col">Phone</th>
+      <th scope="col">Email</th>
+      <th scope="col">Planning Center</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @donors.each do |donor| %>
+      <tr>
+        <td>
+          <strong><%= donor.full_name %></strong><br/>
+          <% if donor.address_1 %>
+            <%= donor.address_1 %><br/>
+          <% end %>
+          <% if donor.address_2 %>
+            <%= donor.address_2 %><br/>
+          <% end %>
+          <%= donor.city %>, <%= donor.state %> <%= donor.zip_code %><br/>
+        </td>
+        <td><%= donor.phone %></td>
+        <td><%= donor.email %></td>
+        <td>
+          <%= donor.planning_center_person&.full_name %>
+        </td>
+        <td><%= link_to 'Show', donor %></td>
+        <td><%= link_to 'Edit', edit_donor_path(donor) %></td>
+        <td><%= link_to 'Destroy', donor, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Donor', new_donor_path %>

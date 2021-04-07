@@ -1,0 +1,45 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <%= render 'shares/head' %>
+</head>
+<body>
+  <div class=container-fluid>
+    <div class="row">
+      <nav id="sidebarMenu" class="d-flex flex-column p-3 text-white bg-light sidebar">
+        <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none">
+          <span class="fs-4"><%= t('application_name') %></span>
+        </a>
+        <hr>
+        <ul class="nav nav-pills flex-column mb-auto">
+          <li class="nav-item">
+            <%= link_to 'Batches', batches_path, class: "nav-link #{'active' if controller?('batches')}" %>
+          </li>
+          <li class="nav-item">
+            <%= link_to 'Transactions', transactions_path, class: "nav-link #{'active' if controller?('transactions')}" %>
+          </li>
+          <li class="nav-item">
+            <%= link_to 'Donors', donors_path, class: "nav-link #{'active' if controller?('donors')}" %>
+          </li>
+        </ul>
+        <hr>
+        <div class="dropdown">
+          <a href="#" class="d-flex align-items-center link-dark text-decoration-none dropdown-toggle" id="dropdownUser2" data-bs-toggle="dropdown" aria-expanded="false">
+            <img src="https://github.com/mdo.png" alt="mdo" width="32" height="32" class="rounded-circle me-2">
+            <strong><%= current_user.full_name %></strong>
+          </a>
+          <ul class="dropdown-menu text-small shadow" aria-labelledby="dropdownUser2">
+            <li><%= link_to "Edit Profile", edit_user_registration_path, class: 'dropdown-item' %></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><%= link_to 'Sign Out', destroy_user_session_path, class: 'dropdown-item', method: :delete %></li>
+          </ul>
+        </div>
+      </nav>
+      <div class="col-md-9 ms-sm-auto col-lg-9 px-md-4">
+        <%= yield %>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

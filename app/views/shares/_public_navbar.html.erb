@@ -1,0 +1,33 @@
+<header class="p-3 mb-3 border-bottom">
+  <div class="container">
+    <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+      <%= link_to Rails.application.config.application_name, root_path, class: "d-flex align-items-center mb-2 mb-lg-0 text-dark text-decoration-none"%>
+
+      <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+        <li>
+          <%= link_to "Home", root_path, class: "nav-link px-2 #{active_link?("welcome", "index")}" %>
+        </li>
+      </ul>
+
+
+      <% if user_signed_in? %>
+        <div class="dropdown text-end">
+          <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+            <img src="https://github.com/mdo.png" alt="mdo" width="32" height="32" class="rounded-circle">
+          </a>
+          <ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1" style="">
+            <li><%= link_to "Edit Profile", edit_user_registration_path, class: 'dropdown-item' %></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><%= link_to 'Sign Out', destroy_user_session_path, class: 'dropdown-item', method: :delete %></li>
+          </ul>
+        </div>
+
+      <% else %>
+        <div class="col-md-3 text-end">
+          <%= link_to 'Sign In', new_user_session_path, class: "btn btn-outline-primary me-2" %>
+          <%= link_to 'Sign Up', new_user_registration_path, class: "btn btn-primary" %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</header>

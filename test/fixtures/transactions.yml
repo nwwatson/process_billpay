@@ -1,0 +1,84 @@
+# == Schema Information
+#
+# Table name: transactions
+#
+#  id           :bigint           not null, primary key
+#  donor_id     :bigint           not null
+#  bluepay_id   :bigint
+#  payment_type :string
+#  amount       :decimal(, )
+#  status       :string
+#  message      :string
+#  rebilling_id :bigint
+#  settlment_id :bigint
+#  bank_name    :string
+#  address_1    :string
+#  address_2    :string
+#  city         :string
+#  state        :string
+#  zip_code     :string
+#  phone        :string
+#  email        :string
+#  auth_code    :string
+#  first_name   :string
+#  last_name    :string
+#  memo         :string
+#  backend_id   :bigint
+#  account_id   :bigint
+#  created_at   :datetime         not null
+#  updated_at   :datetime         not null
+#
+# Indexes
+#
+#  index_transactions_on_donor_id  (donor_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (donor_id => donors.id)
+#
+
+one:
+  bluepay_id: 1
+  payment_type: MyString
+  amount: 9.99
+  status: MyString
+  message: MyString
+  rebilling_id: 1
+  settlment_id: 1
+  bank_name: MyString
+  address_1: MyString
+  address_2: MyString
+  city: MyString
+  state: MyString
+  zip_code: MyString
+  phone: MyString
+  email: MyString
+  auth_code: MyString
+  first_name: MyString
+  last_name: MyString
+  memo: MyString
+  backend_id: 1
+  account_id: 1
+
+two:
+  bluepay_id: 1
+  payment_type: MyString
+  amount: 9.99
+  status: MyString
+  message: MyString
+  rebilling_id: 1
+  settlment_id: 1
+  bank_name: MyString
+  address_1: MyString
+  address_2: MyString
+  city: MyString
+  state: MyString
+  zip_code: MyString
+  phone: MyString
+  email: MyString
+  auth_code: MyString
+  first_name: MyString
+  last_name: MyString
+  memo: MyString
+  backend_id: 1
+  account_id: 1

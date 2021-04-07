@@ -1,0 +1,29 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Planning center:</strong>
+  <%= @planning_center_person.planning_center_id %>
+</p>
+
+<p>
+  <strong>First name:</strong>
+  <%= @planning_center_person.first_name %>
+</p>
+
+<p>
+  <strong>Last name:</strong>
+  <%= @planning_center_person.last_name %>
+</p>
+
+<p>
+  <strong>String:</strong>
+  <%= @planning_center_person.string %>
+</p>
+
+<p>
+  <strong>Email:</strong>
+  <%= @planning_center_person.email %>
+</p>
+
+<%= link_to 'Edit', edit_planning_center_person_path(@planning_center_person) %> |
+<%= link_to 'Back', planning_center_people_path %>

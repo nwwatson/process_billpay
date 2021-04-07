@@ -1,0 +1,42 @@
+<%= form_with(model: planning_center_person) do |form| %>
+  <% if planning_center_person.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(planning_center_person.errors.count, "error") %> prohibited this planning_center_person from being saved:</h2>
+
+      <ul>
+        <% planning_center_person.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :planning_center_id %>
+    <%= form.text_field :planning_center_id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :first_name %>
+    <%= form.text_field :first_name %>
+  </div>
+
+  <div class="field">
+    <%= form.label :last_name %>
+    <%= form.text_field :last_name %>
+  </div>
+
+  <div class="field">
+    <%= form.label :string %>
+    <%= form.text_field :string %>
+  </div>
+
+  <div class="field">
+    <%= form.label :email %>
+    <%= form.text_field :email %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>

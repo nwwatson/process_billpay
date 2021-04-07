@@ -1,0 +1,33 @@
+# == Schema Information
+#
+# Table name: donors
+#
+#  id         :bigint           not null, primary key
+#  name       :string
+#  address_1  :string
+#  address_2  :string
+#  zip_code   :string
+#  phone      :string
+#  email      :string
+#  bluepay_id :string
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#
+
+one:
+  name: MyString
+  address_1: MyString
+  address_2: MyString
+  zip_code: MyString
+  phone: MyString
+  email: MyString
+  bluepay_id: MyString
+
+two:
+  name: MyString
+  address_1: MyString
+  address_2: MyString
+  zip_code: MyString
+  phone: MyString
+  email: MyString
+  bluepay_id: MyString

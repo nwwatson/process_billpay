@@ -1,0 +1,35 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Planning Center People</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Planning center</th>
+      <th>First name</th>
+      <th>Last name</th>
+      <th>String</th>
+      <th>Email</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @planning_center_people.each do |planning_center_person| %>
+      <tr>
+        <td><%= planning_center_person.planning_center_id %></td>
+        <td><%= planning_center_person.first_name %></td>
+        <td><%= planning_center_person.last_name %></td>
+        <td><%= planning_center_person.string %></td>
+        <td><%= planning_center_person.email %></td>
+        <td><%= link_to 'Show', planning_center_person %></td>
+        <td><%= link_to 'Edit', edit_planning_center_person_path(planning_center_person) %></td>
+        <td><%= link_to 'Destroy', planning_center_person, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Planning Center Person', new_planning_center_person_path %>

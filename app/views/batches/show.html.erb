@@ -1,0 +1,52 @@
+<p id="notice"><%= notice %></p>
+
+<h1><%= @batch.description %></h1>
+
+<p>
+  <strong>Status:</strong>
+  <%= @batch.status %>
+</p>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">Date</th>
+      <th scope="col">Amount</th>
+      <th scope="col">Donor</th>
+      <th scope="col">Status</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @batch.transactions.each do |transaction| %>
+      <tr>
+        <td></td>
+        <td><%= number_to_currency transaction.amount %></td>
+        <td>
+          <strong><%= "#{transaction.first_name} #{transaction.last_name}" %></strong><br/>
+          <% if transaction.address_1 %>
+            <%= transaction.address_1 %><br/>
+          <% end %>
+          <% if transaction.address_2 %>
+            <%= transaction.address_2 %><br/>
+          <% end %>
+          <%= transaction.city %>, <%= transaction.state %> <%= transaction.zip_code %><br/>
+        </td>
+        <td>
+          <% if transaction.unprocessable? %>
+            <%= link_to 'Map to Planning Center Person', '#', class: 'btn btn-outline-danger' %>
+          <% end %>
+
+          <% if transaction.unprocessed? %>
+            <span class="badge bg-success rounded-pill">Processed</span>
+          <% end %>
+
+          <% if transaction.processed? %>
+            <span class="badge bg-warning text-dark rounded-pill">Waiting to be processed</span>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= link_to 'Back', batches_path %>
