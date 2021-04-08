@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'CSV'
+require 'csv'
 
 class TransactionImporter
   include Callable
