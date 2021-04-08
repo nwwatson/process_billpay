@@ -7,8 +7,9 @@ class SubmitDonation
 
   def call
     return if @transaction.processed?
+
     payload = DonationPayload.new(@transaction)
-    response = api.giving.v2.donations.post(payload.payload)
+    api.giving.v2.donations.post(payload.payload)
   end
 
   private

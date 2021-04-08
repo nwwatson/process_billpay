@@ -17,9 +17,6 @@
             <%= link_to 'Batches', batches_path, class: "nav-link #{'active' if controller?('batches')}" %>
           </li>
           <li class="nav-item">
-            <%= link_to 'Transactions', transactions_path, class: "nav-link #{'active' if controller?('transactions')}" %>
-          </li>
-          <li class="nav-item">
             <%= link_to 'Donors', donors_path, class: "nav-link #{'active' if controller?('donors')}" %>
           </li>
         </ul>
@@ -30,7 +27,7 @@
             <strong><%= current_user.full_name %></strong>
           </a>
           <ul class="dropdown-menu text-small shadow" aria-labelledby="dropdownUser2">
-            <li><%= link_to "Edit Profile", edit_user_registration_path, class: 'dropdown-item' %></li>
+            <li><%= link_to "Edit Profile", "#", class: 'dropdown-item' %></li>
             <li><hr class="dropdown-divider"></li>
             <li><%= link_to 'Sign Out', destroy_user_session_path, class: 'dropdown-item', method: :delete %></li>
           </ul>

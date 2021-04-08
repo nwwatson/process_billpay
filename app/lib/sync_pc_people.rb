@@ -1,3 +1,7 @@
+# frozen_string_literal: true
+
+##
+# SyncPcPeople
 class SyncPcPeople
   include Callable
 
@@ -11,13 +15,13 @@ class SyncPcPeople
   end
 
   def process(response)
-    return if response.people.size == 0
+    return if response.people.length.zero?
 
     response.people.each do |person|
       p = PlanningCenterPerson.find_or_create_by_id(
         planning_center_id: person['id'],
         first_name: person['attributes']['first_name'],
-        last_name: person['attributes']['last-name'],
+        last_name: person['attributes']['last_name'],
       )
       emails = person['relationships']['emails']['data'] || []
       emails.each do |email|
@@ -37,6 +41,8 @@ class SyncPcPeople
 
   def process_batch(values)
     values['data'].each do |person|
+      next unless PlanningCenterPerson.find_by(planning_center_id: person['id']).exists?
+
       PlanningCenterPerson.create(
         planning_center_id: person['id'],
         first_name: person['attributes']['first_name'],

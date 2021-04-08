@@ -19,7 +19,7 @@
   <tbody>
     <% @batch.transactions.each do |transaction| %>
       <tr>
-        <td></td>
+        <td><%= transaction.issue_date.strftime('%m/%d/%Y') %></td>
         <td><%= number_to_currency transaction.amount %></td>
         <td>
           <strong><%= "#{transaction.first_name} #{transaction.last_name}" %></strong><br/>
@@ -33,7 +33,7 @@
         </td>
         <td>
           <% if transaction.unprocessable? %>
-            <%= link_to 'Map to Planning Center Person', '#', class: 'btn btn-outline-danger' %>
+            <%= link_to 'Map to Planning Center Person', edit_batch_transaction_path(@batch, transaction), class: 'btn btn-outline-danger' %>
           <% end %>
 
           <% if transaction.unprocessed? %>

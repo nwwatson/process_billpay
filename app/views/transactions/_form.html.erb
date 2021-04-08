@@ -1,8 +1,7 @@
-<%= form_with(model: transaction) do |form| %>
+<%= form_with(model: transaction, builder: BootstrapBuilder, url: batch_transaction_path(@batch, transaction)) do |form| %>
   <% if transaction.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(transaction.errors.count, "error") %> prohibited this transaction from being saved:</h2>
-
       <ul>
         <% transaction.errors.each do |error| %>
           <li><%= error.full_message %></li>
@@ -11,112 +10,11 @@
     </div>
   <% end %>
 
-  <div class="field">
-    <%= form.label :bluepay_id %>
-    <%= form.number_field :bluepay_id %>
-  </div>
-
-  <div class="field">
-    <%= form.label :payment_type %>
-    <%= form.text_field :payment_type %>
-  </div>
-
-  <div class="field">
-    <%= form.label :amount %>
-    <%= form.text_field :amount %>
-  </div>
-
-  <div class="field">
-    <%= form.label :status %>
-    <%= form.text_field :status %>
-  </div>
-
-  <div class="field">
-    <%= form.label :message %>
-    <%= form.text_field :message %>
-  </div>
-
-  <div class="field">
-    <%= form.label :rebilling_id %>
-    <%= form.number_field :rebilling_id %>
-  </div>
-
-  <div class="field">
-    <%= form.label :settlment_id %>
-    <%= form.number_field :settlment_id %>
-  </div>
-
-  <div class="field">
-    <%= form.label :bank_name %>
-    <%= form.text_field :bank_name %>
-  </div>
-
-  <div class="field">
-    <%= form.label :address_1 %>
-    <%= form.text_field :address_1 %>
-  </div>
-
-  <div class="field">
-    <%= form.label :address_2 %>
-    <%= form.text_field :address_2 %>
-  </div>
-
-  <div class="field">
-    <%= form.label :city %>
-    <%= form.text_field :city %>
-  </div>
-
-  <div class="field">
-    <%= form.label :state %>
-    <%= form.text_field :state %>
-  </div>
-
-  <div class="field">
-    <%= form.label :zip_code %>
-    <%= form.text_field :zip_code %>
-  </div>
-
-  <div class="field">
-    <%= form.label :phone %>
-    <%= form.text_field :phone %>
-  </div>
-
-  <div class="field">
-    <%= form.label :email %>
-    <%= form.text_field :email %>
-  </div>
-
-  <div class="field">
-    <%= form.label :auth_code %>
-    <%= form.text_field :auth_code %>
-  </div>
-
-  <div class="field">
-    <%= form.label :first_name %>
-    <%= form.text_field :first_name %>
-  </div>
-
-  <div class="field">
-    <%= form.label :last_name %>
-    <%= form.text_field :last_name %>
-  </div>
-
-  <div class="field">
-    <%= form.label :memo %>
-    <%= form.text_field :memo %>
-  </div>
-
-  <div class="field">
-    <%= form.label :backend_id %>
-    <%= form.number_field :backend_id %>
-  </div>
-
-  <div class="field">
-    <%= form.label :account_id %>
-    <%= form.number_field :account_id %>
-  </div>
+  <%= form.fields_for :donor do |d| %>
+    <%= d.collection_select :planning_center_person_id, planning_center_people_list, :id, :name, { prompt: true } %>
+  <% end %>
 
   <div class="actions">
-    <%= form.submit %>
+    <%= form.form_submit %>
   </div>
 <% end %>

@@ -12,7 +12,7 @@ class DonationPayload
         "type": "Donation",
         "attributes": {
           "payment_method": "ach",
-          "received_at": "2017-10-10"
+          "received_at": @transaction.issue_date.strftime('%Y-%m-%d')
         },
         "relationships": {
           "person": {

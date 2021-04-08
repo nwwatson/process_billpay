@@ -33,9 +33,6 @@ class BootstrapBuilder < ActionView::Helpers::FormBuilder
             field_label(name) + super(name, options) + instructions(instructions) + display_error(name, object.errors)
           end
         end
-
-
-
       else
         super(name, options) + display_error(name, object.errors)
       end
@@ -44,7 +41,7 @@ class BootstrapBuilder < ActionView::Helpers::FormBuilder
 
   def collection_select(method, collection, value_method, text_method, options = {}, html_options = {})
     required = object.errors[method].any?
-    required_css = required ? 'has-error' : ''
+    required_css = required ? "has-error" : ""
     html_options[:class] = "form-control #{html_options[:class]}"
     has_label = (html_options[:has_label] == false) ? false : true
     if has_label

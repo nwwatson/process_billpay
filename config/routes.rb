@@ -1,13 +1,11 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
-  resources :batches, only: %i[index show]
+  resources :batches, only: %i[index show] do
+    resources :transactions, only: %i[edit update]
+  end
   resources :planning_center_people
   resources :donors
-  resources :transactions do
-    patch 'submission', on: :member
-    put 'submission', on: :member
-  end
   devise_for :users, path: '/', path_names: {
     sign_in: 'sign_in',
     sign_out: 'sign_out',
@@ -15,7 +13,6 @@ Rails.application.routes.draw do
     confirmation: 'confirmation',
     unlock: 'unlock',
     registration: 'register',
-    sign_up: 'sign_up'
   }
 
   get '/privacy', to: 'welcome#privacy'

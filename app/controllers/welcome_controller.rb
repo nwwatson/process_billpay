@@ -2,8 +2,8 @@
 
 class WelcomeController < ApplicationController
 
-  def index;
-    redirect_to transactions_path if user_signed_in?
+  def index
+    redirect_to user_signed_in? ? batches_path : new_user_session_path
   end
 
   def terms; end
