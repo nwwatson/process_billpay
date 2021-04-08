@@ -1,6 +1,6 @@
 require 'net/http'
 require 'net/https'
-require 'SecureRandom'
+#require 'SecureRandom'
 require 'uri'
 require 'digest/sha2'
 require 'cgi'
