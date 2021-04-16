@@ -13,11 +13,12 @@
       <th scope="col">Date</th>
       <th scope="col">Amount</th>
       <th scope="col">Donor</th>
+      <th scope="col">Allocations</th>
       <th scope="col">Status</th>
     </tr>
   </thead>
   <tbody>
-    <% @batch.transactions.each do |transaction| %>
+    <% @batch.transactions.includes(transaction_allocations: [:fund]).each do |transaction| %>
       <tr>
         <td><%= transaction.issue_date.strftime('%m/%d/%Y') %></td>
         <td><%= number_to_currency transaction.amount %></td>
@@ -30,6 +31,13 @@
             <%= transaction.address_2 %><br/>
           <% end %>
           <%= transaction.city %>, <%= transaction.state %> <%= transaction.zip_code %><br/>
+        </td>
+        <td>
+          <ul class="transaction-allocation-list">
+            <% transaction.transaction_allocations.each do |allocation| %>
+              <li><%= allocation.fund.name %> <%= number_to_currency allocation.amount %></li>
+            <% end %>
+          </ul>
         </td>
         <td>
           <% if transaction.unprocessable? %>

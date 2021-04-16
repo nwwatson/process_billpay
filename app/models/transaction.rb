@@ -47,6 +47,7 @@ class Transaction < ApplicationRecord
 
   belongs_to :batch, optional: true
   belongs_to :donor
+  has_many :transaction_allocations, foreign_key: 'donation_id', dependent: :destroy
 
   before_save :update_processability
   after_update :process_valid_record

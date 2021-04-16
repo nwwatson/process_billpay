@@ -23,17 +23,21 @@ class DonationPayload
           },
         }
       },
-      "included": [
-        {
-          "type": "Designation",
-          "attributes": { "amount_cents": @transaction.amount_in_cents },
-          "relationships": {
-            "fund": {
-              "data": { "type": "Fund", "id": "185489" }
-            }
+      "included": designations
+    }
+  end
+
+  def designations
+    @transaction.transaction_allocations.includes(:fund).collect do |allocation|
+      {
+        "type": "Designation",
+        "attributes": { "amount_cents": allocation.amount_in_cents },
+        "relationships": {
+          "fund": {
+            "data": { "type": "Fund", "id": allocation.fund.planning_center_id }
           }
         }
-      ]
-    }
+      }
+    end
   end
 end

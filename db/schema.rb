@@ -10,10 +10,22 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_04_08_135529) do
+ActiveRecord::Schema.define(version: 2021_04_16_153051) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "allocations", force: :cascade do |t|
+    t.bigint "donor_id", null: false
+    t.bigint "fund_id", null: false
+    t.decimal "amount"
+    t.integer "amount_in_cents"
+    t.integer "frequency"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["donor_id"], name: "index_allocations_on_donor_id"
+    t.index ["fund_id"], name: "index_allocations_on_fund_id"
+  end
 
   create_table "batches", force: :cascade do |t|
     t.bigint "planning_center_id", null: false
@@ -44,6 +56,14 @@ ActiveRecord::Schema.define(version: 2021_04_08_135529) do
     t.index ["planning_center_person_id"], name: "index_donors_on_planning_center_person_id"
   end
 
+  create_table "funds", force: :cascade do |t|
+    t.string "name"
+    t.integer "planning_center_id"
+    t.string "bluepay_category"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
   create_table "planning_center_emails", force: :cascade do |t|
     t.bigint "planning_center_person_id", null: false
     t.bigint "planning_center_id"
@@ -62,6 +82,19 @@ ActiveRecord::Schema.define(version: 2021_04_08_135529) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["planning_center_id"], name: "index_planning_center_people_on_planning_center_id"
+  end
+
+  create_table "transaction_allocations", force: :cascade do |t|
+    t.integer "donation_id", null: false
+    t.bigint "allocation_id"
+    t.bigint "fund_id", null: false
+    t.decimal "amount", null: false
+    t.decimal "amount_in_cents", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["allocation_id"], name: "index_transaction_allocations_on_allocation_id"
+    t.index ["donation_id"], name: "index_transaction_allocations_on_donation_id"
+    t.index ["fund_id"], name: "index_transaction_allocations_on_fund_id"
   end
 
   create_table "transactions", force: :cascade do |t|
@@ -123,8 +156,12 @@ ActiveRecord::Schema.define(version: 2021_04_08_135529) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "allocations", "donors"
+  add_foreign_key "allocations", "funds"
   add_foreign_key "donors", "planning_center_people"
   add_foreign_key "planning_center_emails", "planning_center_people"
+  add_foreign_key "transaction_allocations", "allocations"
+  add_foreign_key "transaction_allocations", "funds"
   add_foreign_key "transactions", "batches"
   add_foreign_key "transactions", "donors"
 end

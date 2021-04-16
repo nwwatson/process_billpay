@@ -27,7 +27,9 @@
 #
 class Donor < ApplicationRecord
   belongs_to :planning_center_person, optional: true
+
   has_many :transactions
+  has_many :allocations
 
   validates_presence_of :email
 
@@ -37,6 +39,10 @@ class Donor < ApplicationRecord
 
   def processable?
     planning_center_person.present?
+  end
+
+  def total_allocations
+    allocations.sum(&:amount_in_cents)
   end
 
   class << self

@@ -1,0 +1,11 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: MyString
+  planning_center_id: 1
+  bluepay_category: MyString
+
+two:
+  name: MyString
+  planning_center_id: 1
+  bluepay_category: MyString

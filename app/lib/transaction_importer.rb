@@ -8,14 +8,19 @@ class TransactionImporter
   ##
   # @param from_date YYYY-MM-DD
   # @param to_date YYYY-MM-DD
-  def initialize(from_date, to_date, create_pc_records = true)
+  def initialize(from_date, to_date, options = {})
     @from_date = from_date
     @to_date = to_date
-    @create_pc_records = create_pc_records
+    @create_pc_records = options.fetch(:create_pc_records, true)
+    @create_transactions = options.fetch(:create_transactions, true)
   end
 
   def create_pc_records?
     @create_pc_records
+  end
+
+  def create_transactions?
+    @create_transactions
   end
 
   def call
@@ -32,10 +37,11 @@ class TransactionImporter
     result = client.process
     record_array = CSV.parse(result, col_sep: ',')
 
-    batch = PlanningCenter::CreateBatchCommand.call("BluePay Dontations for #{@from_date} to #{@to_date}", create_pc_records?)
+    batch = if create_transactions?
+              PlanningCenter::CreateBatchCommand.call("BluePay Dontations for #{@from_date} to #{@to_date}", create_pc_records?)
+            end
 
     record_array.drop(1).each do |record|
-      Rails.logger.info record
 
       planning_center_person = PlanningCenterPerson.by_email(record[27])
       donor = Donor.find_or_create_by_email(
@@ -50,14 +56,15 @@ class TransactionImporter
         email: record[27],
         planning_center_person: planning_center_person
       )
-      Rails.logger.info record_array[0]
-      Rails.logger.info record
-      Rails.logger.info "#{record_array[0][15]}: #{record[15]}"
-      Rails.logger.info "#{record_array[0][16]}: #{record[16]}"
-      Rails.logger.info "* PROCESSING RECORD #{record[0]}"
+
+      puts ''
+      puts "* Processing donation for #{donor.first_name} #{donor.last_name}"
+
+      next unless create_transactions?
+
       next if Transaction.exists?(bluepay_id: record[0])
 
-      Transaction.create!(
+      transaction = Transaction.create!(
         donor: donor,
         batch: batch,
         bluepay_id: record[0],
@@ -85,9 +92,34 @@ class TransactionImporter
         account_id: record[44],
         raw: record.to_s.gsub(/\"/, '\'').gsub(/[\[\]]/, '')
       )
+
+      puts "* Donor allocations? #{donor.allocations.any?}"
+      puts "* Transaction Amount: #{transaction.amount_in_cents.to_i}"
+      puts "* Donor Allcations: #{donor.total_allocations}"
+      if transaction.amount_in_cents == donor.total_allocations
+        puts '* Donor allocations equal donation amount'
+        donor.allocations.each do |allocation|
+          puts "* Allocating #{allocation.amount} to fund #{allocation.fund.name}"
+          transaction.transaction_allocations.create!(
+            allocation: allocation,
+            fund: allocation.fund,
+            amount: allocation.amount,
+            amount_in_cents: allocation.amount_in_cents
+          )
+        end
+      else
+        puts '* Donor allocaitons DO NOT EQUAL donation amount'
+        puts "* Allocating #{transaction.amount} to fund General Fund"
+        transaction.transaction_allocations.create!(
+          fund: Fund.find_by(planning_center_id: 185489),
+          amount: transaction.amount,
+          amount_in_cents: transaction.amount_in_cents
+        )
+      end
+      puts ''
     end
 
-    return unless create_pc_records?
+    return unless create_transactions? && create_pc_records?
 
     batch.transactions.unprocessed.each do |transaction|
       puts "Creating Donation #{transaction.id}"

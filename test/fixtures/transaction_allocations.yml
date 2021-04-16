@@ -1,0 +1,13 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  transaction: one
+  allocation: one
+  amount: one
+  amount_in_cents: one
+
+two:
+  transaction: two
+  allocation: two
+  amount: two
+  amount_in_cents: two
