@@ -28,9 +28,14 @@ namespace :data do
   end
 
   task :transactions, [] => :environment do
-    from_date = Time.now.last_week.beginning_of_week
-    to_date = from_date.end_of_week
-    TransactionImporter.call(from_date.strftime('%Y-%m-%d'), to_date.strftime('%Y-%m-%d'))
+    if Time.now.in_time_zone.monday?
+      puts "It's monday, lets run it"
+      from_date = Time.now.last_week.beginning_of_week
+      to_date = from_date.end_of_week
+      TransactionImporter.call(from_date.strftime('%Y-%m-%d'), to_date.strftime('%Y-%m-%d'))
+    else
+      puts "It's not monday"
+    end
   end
 
   task :import_allocations, [] => :environment do
