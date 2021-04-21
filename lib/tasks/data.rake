@@ -46,7 +46,11 @@ namespace :data do
         planning_center_person = PlanningCenterPerson.by_email(donor.email, donor.first_name)
         donor.planning_center_person = planning_center_person
 
-        donor.save! if donor.email
+        begin
+          donor.save! if donor.email
+        rescue
+          puts "cannot save donor #{donor.full_name}"
+        end
       end
     end
   end
