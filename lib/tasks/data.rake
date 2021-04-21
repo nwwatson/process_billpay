@@ -28,18 +28,18 @@ namespace :data do
   end
 
   task :transactions, [] => :environment do
-    #if Time.now.in_time_zone.monday?
+    if Time.now.in_time_zone.monday?
       puts "It's monday, lets run it"
       from_date = Time.now.last_week.beginning_of_week
       to_date = from_date.end_of_week
       TransactionImporter.call(from_date, to_date, create_pc_records: Rails.env.production?)
-    #else
-    #  puts "It's not monday"
-    #end
+    else
+      puts "It's not monday"
+    end
   end
 
   task :update_donors, [] => :environment do
-    #SyncPcPeople.call
+    SyncPcPeople.call
 
     Donor.invalid.each do |donor|
       unless donor.planning_center_person_id
