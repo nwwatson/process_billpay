@@ -31,8 +31,6 @@ class Donor < ApplicationRecord
   has_many :transactions
   has_many :allocations
 
-  validates_presence_of :email
-
   scope :invalid, -> { where(planning_center_person_id: nil) }
 
   def full_name
