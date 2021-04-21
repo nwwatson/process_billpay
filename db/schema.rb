@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_04_16_153051) do
+ActiveRecord::Schema.define(version: 2021_04_20_143326) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -82,6 +82,14 @@ ActiveRecord::Schema.define(version: 2021_04_16_153051) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["planning_center_id"], name: "index_planning_center_people_on_planning_center_id"
+  end
+
+  create_table "raw_data", force: :cascade do |t|
+    t.bigint "batch_id", null: false
+    t.string "data"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["batch_id"], name: "index_raw_data_on_batch_id"
   end
 
   create_table "transaction_allocations", force: :cascade do |t|
@@ -160,6 +168,7 @@ ActiveRecord::Schema.define(version: 2021_04_16_153051) do
   add_foreign_key "allocations", "funds"
   add_foreign_key "donors", "planning_center_people"
   add_foreign_key "planning_center_emails", "planning_center_people"
+  add_foreign_key "raw_data", "batches"
   add_foreign_key "transaction_allocations", "allocations"
   add_foreign_key "transaction_allocations", "funds"
   add_foreign_key "transactions", "batches"

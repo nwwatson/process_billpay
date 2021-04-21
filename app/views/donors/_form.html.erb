@@ -1,27 +1,69 @@
-<%= form_with(model: donor, builder: BootstrapBuilder) do |form| %>
-  <% if donor.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(donor.errors.count, "error") %> prohibited this donor from being saved:</h2>
+<div class="alert alert-primary" role="alert">
+  <h4 class="alert-heading"><%= donor.full_name %></h4>
+  <p>
+    <strong>Address</strong><br/>
+    <% if donor.address_1 %>
+      <%= donor.address_1 %><br/>
+    <% end %>
+    <% if donor.address_2 %>
+      <%= donor.address_2 %><br/>
+    <% end %>
+    <%= donor.city %>, <%= donor.state %> <%= donor.zip_code %><br/>
+  </p>
+  <hr>
+  <p class="mb-0">
+    Donors are mapped to Planning Center People. This screen allows you to select the
+    person in Planning Center to which the donation will be applied. You can either
+    select a person using the dropdown list below OR select one from the list of
+    possible matches.
+  </p>
+</div>
+<div class="card">
+  <h5 class="card-header">Select a Planning Center Person</h5>
+  <div class="card-body">
+    <%= form_with(model: donor, builder: BootstrapBuilder) do |form| %>
+      <%= form.error_messages %>
+      <%= form.collection_select :planning_center_person_id, planning_center_people_list, :id, :name, { prompt: true } %>
+      <div class="actions">
+        <%= form.form_submit %>
+      </div>
+    <% end %>
+   </div>
+</div>
 
-      <ul>
-        <% donor.errors.each do |error| %>
-          <li><%= error.full_message %></li>
+<h2 class="mx-auto">OR</h2>
+
+<div class="card">
+  <h5 class="card-header">Select from Possible Matches</h5>
+  <div class="card-body">
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">Donor</th>
+          <th scope="col">Email</th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% PlanningCenterPerson.find_possible_match(donor).each do |person| %>
+          <tr>
+            <td><%= person.full_name %></td>
+            <td>
+              <ul>
+                <% person.planning_center_emails.each do |email| %>
+                  <li><%= email.email %></li>
+                <% end %>
+              </ul>
+            </td>
+            <td>
+              <%= form_with(model: donor, builder: BootstrapBuilder) do |form| %>
+                <%= form.hidden_field :planning_center_person_id, value: person.id %>
+                <%= form.submit "Select #{person.full_name}", class: 'btn btn-primary' %>
+              <% end %>
+            </td>
+          </tr>
         <% end %>
-      </ul>
-    </div>
-  <% end %>
-
-  <%= form.text_field :first_name %>
-  <%= form.text_field :last_name %>
-  <%= form.text_field :address_1 %>
-  <%= form.text_field :address_2 %>
-  <%= form.text_field :city %>
-  <%= form.text_field :state %>
-  <%= form.text_field :zip_code %>
-  <%= form.text_field :phone %>
-  <%= form.text_field :email %>
-
-  <div class="actions">
-    <%= form.submit %>
+      </tbody>
+    </table>
   </div>
-<% end %>
+</div>

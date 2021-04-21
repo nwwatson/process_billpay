@@ -19,6 +19,14 @@ class TransactionImporter
     @create_pc_records
   end
 
+  def transaction_from_date
+    @from_date.strftime('%Y-%m-%d')
+  end
+
+  def transaction_to_date
+    (@to_date + 1.day).strftime('%Y-%m-%d')
+  end
+
   def create_transactions?
     @create_transactions
   end
@@ -27,8 +35,8 @@ class TransactionImporter
     client = BluePay::Client.new
 
     client.get_transaction_report(
-      report_start_date: @from_date,
-      report_end_date: @to_date,
+      report_start_date: transaction_from_date,
+      report_end_date: transaction_to_date,
       query_by_hierarchy: '1',
       do_not_escape: '1', # Output response without commas? Yes
       exclude_errors: '1' # Do not include errored transactions? Yes
@@ -38,12 +46,14 @@ class TransactionImporter
     record_array = CSV.parse(result, col_sep: ',')
 
     batch = if create_transactions?
-              PlanningCenter::CreateBatchCommand.call("BluePay Dontations for #{@from_date} to #{@to_date}", create_pc_records?)
+              PlanningCenter::CreateBatchCommand.call("BluePay Dontations for #{@transaction_from_date} to #{@to_date.strftime('%Y-%m-%d')}", create_pc_records?)
             end
+
+    RawDatum.create(batch: batch, data: result)
 
     record_array.drop(1).each do |record|
 
-      planning_center_person = PlanningCenterPerson.by_email(record[27])
+      planning_center_person = PlanningCenterPerson.by_email(record[27], record[29])
       donor = Donor.find_or_create_by_email(
         first_name: record[29],
         last_name: record[30],
@@ -72,8 +82,8 @@ class TransactionImporter
         amount: record[3],
         status: record[11],
         message: record[12],
-        issue_date: record[15] ? DateTime.parse(record[15]) : nil,
-        settle_date: record[16] ? DateTime.parse(record[16]) : nil,
+        issue_date: record[15] ? DateTime.parse("#{record[15]} -0400") : nil,
+        settle_date: record[16] ? DateTime.parse("#{record[16]} -0400") : nil,
         rebilling_id: record[17],
         settlment_id: record[18],
         bank_name: record[20],

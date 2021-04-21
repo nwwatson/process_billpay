@@ -21,6 +21,10 @@ class PlanningCenterPerson < ApplicationRecord
 
   has_many :planning_center_emails
 
+  scope :by_first_name, ->(first_name) { where('LOWER(first_name) = ?', first_name.downcase) }
+  scope :by_last_name, ->(last_name) { where('LOWER(last_name) = ?', last_name.downcase) }
+  scope :by_full_name, ->(first, last) { by_first_name(first).by_last_name(last) }
+
   def full_name
     "#{first_name} #{last_name}"
   end
@@ -38,8 +42,21 @@ class PlanningCenterPerson < ApplicationRecord
       )
     end
 
-    def by_email(email)
-      joins(:planning_center_emails).find_by(planning_center_emails: { email: email })
+    def by_email(email, first_name)
+      return unless email
+
+      people = joins(:planning_center_emails)
+                .where('LOWER(planning_center_emails.email) = ?', email.downcase)
+
+      return people.first if people.size == 1
+
+      people.detect { |p| p.first_name.downcase == first_name.downcase }
+    end
+
+    def find_possible_match(donor)
+      by_full_name(donor.first_name, donor.last_name)
+        .or(by_last_name(donor.last_name))
+        .order(last_name: :asc, first_name: :asc)
     end
   end
 end

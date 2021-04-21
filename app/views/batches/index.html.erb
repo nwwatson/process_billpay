@@ -7,6 +7,7 @@
     <tr>
       <th scope="col">Description</th>
       <th>Status</th>
+      <th>Amount</th>
       <th colspan="3"></th>
     </tr>
   </thead>
@@ -16,6 +17,7 @@
       <tr>
         <td><%= batch.description %></td>
         <td><%= batch.status %></td>
+        <td><%= number_to_currency batch.total_donations %></td>
         <td><%= link_to 'Show', batch, class: 'btn btn-outline-primary' %></td>
       </tr>
     <% end %>

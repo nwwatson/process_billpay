@@ -30,6 +30,9 @@
 #  updated_at         :datetime         not null
 #  processing_status  :integer          default("unprocessed"), not null
 #  batch_id           :bigint           not null
+#  issue_date         :datetime
+#  settle_date        :datetime
+#  raw                :string
 #
 # Indexes
 #

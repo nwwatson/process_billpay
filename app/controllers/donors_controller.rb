@@ -6,7 +6,10 @@ class DonorsController < ApplicationController
 
   # GET /donors or /donors.json
   def index
-    @donors = Donor.all.includes(:planning_center_person).order(:last_name)
+    @donors = Donor.all
+                   .includes(:planning_center_person)
+                   .order(:last_name)
+                   .paginate(page: params[:page], per_page: 30)
   end
 
   # GET /donors/1 or /donors/1.json
@@ -41,7 +44,7 @@ class DonorsController < ApplicationController
   def update
     respond_to do |format|
       if @donor.update(donor_params)
-        format.html { redirect_to @donor, notice: "Donor was successfully updated." }
+        format.html { redirect_to donors_path, notice: "Donor was successfully updated." }
         format.json { render :show, status: :ok, location: @donor }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -67,6 +70,8 @@ class DonorsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def donor_params
-      params.fetch(:donor, {})
+      params.require(:donor).permit(
+        :planning_center_person_id
+      )
     end
 end

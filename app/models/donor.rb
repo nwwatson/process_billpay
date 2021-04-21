@@ -33,6 +33,8 @@ class Donor < ApplicationRecord
 
   validates_presence_of :email
 
+  scope :invalid, -> { where(planning_center_person_id: nil) }
+
   def full_name
     "#{first_name} #{last_name}"
   end

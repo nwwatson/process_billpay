@@ -5,7 +5,7 @@ Rails.application.routes.draw do
     resources :transactions, only: %i[edit update]
   end
   resources :planning_center_people
-  resources :donors
+  resources :donors, only: %i[index edit update]
   devise_for :users, path: '/', path_names: {
     sign_in: 'sign_in',
     sign_out: 'sign_out',
