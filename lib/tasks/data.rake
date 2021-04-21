@@ -45,7 +45,8 @@ namespace :data do
       unless donor.planning_center_person_id
         planning_center_person = PlanningCenterPerson.by_email(donor.email, donor.first_name)
         donor.planning_center_person = planning_center_person
-        donor.save
+
+        donor.save! if donor.email
       end
     end
   end
