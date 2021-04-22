@@ -1,20 +1,65 @@
-<%= form_with(model: transaction, builder: BootstrapBuilder, url: batch_transaction_path(@batch, transaction)) do |form| %>
-  <% if transaction.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(transaction.errors.count, "error") %> prohibited this transaction from being saved:</h2>
-      <ul>
-        <% transaction.errors.each do |error| %>
-          <li><%= error.full_message %></li>
-        <% end %>
-      </ul>
-    </div>
-  <% end %>
+<%= render 'donors/donor_information', donor: transaction.donor %>
 
-  <%= form.fields_for :donor do |d| %>
-    <%= d.collection_select :planning_center_person_id, planning_center_people_list, :id, :name, { prompt: true } %>
-  <% end %>
+<div class="card">
+  <h5 class="card-header">Select a Planning Center Person</h5>
+  <div class="card-body">
+    <%= form_with(model: transaction, builder: BootstrapBuilder, url: batch_transaction_path(@batch, transaction)) do |form| %>
+      <% if transaction.errors.any? %>
+        <div id="error_explanation">
+          <h2><%= pluralize(transaction.errors.count, "error") %> prohibited this transaction from being saved:</h2>
+          <ul>
+            <% transaction.errors.each do |error| %>
+              <li><%= error.full_message %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+      <%= form.fields_for :donor do |d| %>
+        <%= d.collection_select :planning_center_person_id, planning_center_people_list, :id, :name, { prompt: true } %>
+      <% end %>
 
-  <div class="actions">
-    <%= form.form_submit %>
+      <div class="actions">
+        <%= form.form_submit %>
+      </div>
+    <% end %>
   </div>
-<% end %>
+</div>
+<h2 class="mx-auto">OR</h2>
+<div class="card">
+  <h5 class="card-header">Select from Possible Matches</h5>
+  <div class="card-body">
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">Donor</th>
+          <th scope="col">Email</th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% PlanningCenterPerson.find_possible_match(transaction.donor).each do |person| %>
+          <tr>
+            <td><%= person.full_name %></td>
+            <td>
+              <ul>
+                <% person.planning_center_emails.each do |email| %>
+                  <li><%= email.email %></li>
+                <% end %>
+              </ul>
+            </td>
+            <td>
+              <%= form_with(model: transaction, builder: BootstrapBuilder, url: batch_transaction_path(@batch, transaction)) do |form| %>
+                <%= form.fields_for :donor do |d| %>
+                  <%= d.hidden_field :planning_center_person_id, value: person.id %>
+                <% end %>
+                <%= form.submit "Select #{person.full_name}", class: 'btn btn-primary' %>
+              <% end %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+

@@ -1,23 +1,5 @@
-<div class="alert alert-primary" role="alert">
-  <h4 class="alert-heading"><%= donor.full_name %></h4>
-  <p>
-    <strong>Address</strong><br/>
-    <% if donor.address_1 %>
-      <%= donor.address_1 %><br/>
-    <% end %>
-    <% if donor.address_2 %>
-      <%= donor.address_2 %><br/>
-    <% end %>
-    <%= donor.city %>, <%= donor.state %> <%= donor.zip_code %><br/>
-  </p>
-  <hr>
-  <p class="mb-0">
-    Donors are mapped to Planning Center People. This screen allows you to select the
-    person in Planning Center to which the donation will be applied. You can either
-    select a person using the dropdown list below OR select one from the list of
-    possible matches.
-  </p>
-</div>
+<%= render 'donor_information', donor: donor %>
+
 <div class="card">
   <h5 class="card-header">Select a Planning Center Person</h5>
   <div class="card-body">
