@@ -39,7 +39,7 @@ namespace :data do
   end
 
   task :update_donors, [] => :environment do
-    #SyncPcPeople.call
+    SyncPcPeople.call
 
     Donor.invalid.each do |donor|
       unless donor.planning_center_person_id
